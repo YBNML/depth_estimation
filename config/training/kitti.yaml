@@ -1,0 +1,28 @@
+# KITTI depth estimation training config
+dataset: "kitti"
+data_dir: "data/kitti"
+
+train_file: "data/kitti/eigen_train_files.txt"
+val_file: "data/kitti/eigen_val_files.txt"
+test_file: "data/kitti/eigen_test_files.txt"
+
+batch_size: 8
+learning_rate: 0.0001
+weight_decay: 0.01
+epochs: 25
+optimizer: "adamw"
+scheduler: "cosine"
+
+loss: "scale_invariant"
+si_alpha: 10.0
+si_lambda: 0.85
+
+augmentation:
+  horizontal_flip: true
+  color_jitter: true
+  random_crop: true
+  crop_height: 352
+  crop_width: 704
+
+max_depth: 80.0
+min_depth: 0.001
