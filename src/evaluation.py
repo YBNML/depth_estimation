@@ -11,8 +11,8 @@ def compute_metrics(pred: np.ndarray, gt: np.ndarray, min_depth: float = 0.001) 
 
     thresh = np.maximum(pred_v / gt_v, gt_v / pred_v)
     delta1 = float(np.mean(thresh < 1.25))
-    delta2 = float(np.mean(thresh < 1.25 * 2))
-    delta3 = float(np.mean(thresh < 1.25 * 3))
+    delta2 = float(np.mean(thresh < 1.25 ** 2))
+    delta3 = float(np.mean(thresh < 1.25 ** 3))
     absrel = float(np.mean(np.abs(pred_v - gt_v) / gt_v))
     rmse = float(np.sqrt(np.mean((pred_v - gt_v) ** 2)))
 
