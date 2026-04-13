@@ -1,0 +1,25 @@
+# TIE 논문 카메라 구성: 각 110도 FOV, 총 160도
+left:
+  hfov: 110
+  vfov: 74
+  fx: 256.0
+  fy: 256.0
+  cx: 320.0
+  cy: 240.0
+  distortion: [0.0, 0.0, 0.0, 0.0, 0.0]
+  rotation_y_deg: -25.0
+
+right:
+  hfov: 110
+  vfov: 74
+  fx: 256.0
+  fy: 256.0
+  cx: 320.0
+  cy: 240.0
+  distortion: [0.0, 0.0, 0.0, 0.0, 0.0]
+  rotation_y_deg: 25.0
+
+baseline: 0.2
+total_hfov: 160
+image_height: 480
+image_width: 640

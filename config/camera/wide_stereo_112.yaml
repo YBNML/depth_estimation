@@ -1,0 +1,25 @@
+# 졸업논문 카메라 구성: 각 82도 FOV, 총 112도
+left:
+  hfov: 82
+  vfov: 50
+  fx: 380.0
+  fy: 380.0
+  cx: 320.0
+  cy: 240.0
+  distortion: [0.0, 0.0, 0.0, 0.0, 0.0]
+  rotation_y_deg: -15.0
+
+right:
+  hfov: 82
+  vfov: 50
+  fx: 380.0
+  fy: 380.0
+  cx: 320.0
+  cy: 240.0
+  distortion: [0.0, 0.0, 0.0, 0.0, 0.0]
+  rotation_y_deg: 15.0
+
+baseline: 0.2
+total_hfov: 112
+image_height: 480
+image_width: 640

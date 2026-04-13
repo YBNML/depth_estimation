@@ -1,0 +1,21 @@
+# Model settings
+model_name: "convnext_mde"
+model_weights: null
+
+# Image settings
+image_height: 480
+image_width: 640
+
+# Camera config name (from config/camera/)
+camera: "wide_stereo_160"
+
+# Depth settings
+max_depth: 80.0
+min_depth: 0.1
+
+# Refinement
+refinement_method: "linear_regression"
+
+# Paths
+data_dir: "data"
+weights_dir: "weights"
