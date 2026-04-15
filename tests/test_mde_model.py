@@ -29,3 +29,27 @@ def test_ppm_head_output_shape():
     x = torch.randn(1, 768, 11, 22)
     out = ppm(x)
     assert out.shape == (1, 128, 11, 22)
+
+
+from mde.model.lwa_decoder import LWABlock
+
+
+def test_lwa_block_first_stage():
+    # 첫 단계: 7x7 depthwise
+    block = LWABlock(local_ch=384, global_ch=128, out_ch=128, kernel_size=7)
+    block.eval()
+    local_feat = torch.randn(1, 384, 22, 44)
+    global_feat = torch.randn(1, 128, 11, 22)
+    out = block(local_feat, global_feat)
+    # 2x upscale from local
+    assert out.shape == (1, 128, 44, 88)
+
+
+def test_lwa_block_later_stage():
+    # 이후 단계: 3x3 depthwise
+    block = LWABlock(local_ch=192, global_ch=128, out_ch=128, kernel_size=3)
+    block.eval()
+    local_feat = torch.randn(1, 192, 44, 88)
+    global_feat = torch.randn(1, 128, 22, 44)
+    out = block(local_feat, global_feat)
+    assert out.shape == (1, 128, 88, 176)
