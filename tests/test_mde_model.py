@@ -18,3 +18,14 @@ def test_encoder_output_shapes():
 def test_encoder_channels():
     enc = ConvNeXtV2Encoder(variant="convnextv2_tiny", pretrained=False)
     assert enc.channels == [96, 192, 384, 768]
+
+
+from mde.model.ppm_head import PPMHead
+
+
+def test_ppm_head_output_shape():
+    ppm = PPMHead(in_channels=768, out_channels=128, pool_sizes=(1, 2, 3, 6))
+    ppm.eval()
+    x = torch.randn(1, 768, 11, 22)
+    out = ppm(x)
+    assert out.shape == (1, 128, 11, 22)
