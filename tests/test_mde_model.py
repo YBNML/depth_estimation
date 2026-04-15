@@ -74,3 +74,32 @@ def test_scaling_block_different_max_depth():
     x = torch.randn(1, 128, 352, 704)
     depth = block(x)
     assert torch.all(depth <= 10.0)
+
+
+import numpy as np
+from mde.convnext_mde import ConvNeXtMDE
+
+
+def test_convnext_mde_forward():
+    model = ConvNeXtMDE(max_depth=80.0, pretrained=False)
+    model.eval()
+    x = torch.randn(1, 3, 352, 704)
+    depth = model(x)
+    assert depth.shape == (1, 1, 352, 704)
+    assert torch.all(depth >= 0.0)
+    assert torch.all(depth <= 80.0)
+
+
+def test_convnext_mde_predict_interface():
+    model = ConvNeXtMDE(max_depth=80.0, pretrained=False)
+    model.eval()
+    rgb = np.random.randint(0, 255, (352, 704, 3), dtype=np.uint8)
+    depth = model.predict(rgb)
+    assert isinstance(depth, np.ndarray)
+    assert depth.shape == (352, 704)
+    assert depth.dtype == np.float32
+
+
+def test_convnext_mde_get_max_depth():
+    model = ConvNeXtMDE(max_depth=80.0, pretrained=False)
+    assert model.get_max_depth() == 80.0

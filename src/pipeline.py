@@ -9,6 +9,15 @@ def _create_mde(cfg: Config) -> BaseMDE:
     max_depth = cfg.max_depth
     if name == "dummy":
         return DummyMDE(max_depth=max_depth)
+    if name == "convnext_mde":
+        from mde.convnext_mde import ConvNeXtMDE
+        model = ConvNeXtMDE(max_depth=max_depth, pretrained=True)
+        if cfg.get("model_weights"):
+            import torch
+            state = torch.load(cfg.model_weights, map_location="cpu")
+            model.load_state_dict(state)
+        model.eval()
+        return model
     raise ValueError(f"Unknown model: {name}")
 
 class DepthEstimationPipeline:
