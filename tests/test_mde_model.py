@@ -53,3 +53,24 @@ def test_lwa_block_later_stage():
     global_feat = torch.randn(1, 128, 22, 44)
     out = block(local_feat, global_feat)
     assert out.shape == (1, 128, 88, 176)
+
+
+from mde.model.scaling_block import ScalingBlock
+
+
+def test_scaling_block_output_range():
+    block = ScalingBlock(in_channels=128, max_depth=80.0)
+    block.eval()
+    x = torch.randn(1, 128, 352, 704)
+    depth = block(x)
+    assert depth.shape == (1, 1, 352, 704)
+    assert torch.all(depth >= 0.0)
+    assert torch.all(depth <= 80.0)
+
+
+def test_scaling_block_different_max_depth():
+    block = ScalingBlock(in_channels=128, max_depth=10.0)
+    block.eval()
+    x = torch.randn(1, 128, 352, 704)
+    depth = block(x)
+    assert torch.all(depth <= 10.0)
