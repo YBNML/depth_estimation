@@ -8,3 +8,18 @@ weights/
 build/
 dist/
 .pytest_cache/
+
+# 원본 논문/영상 (저작권)
+paper/
+영상/
+
+# 레거시 ROS1 코드 (참고용, 새 구현과 무관)
+catkin_ws2/
+
+# 테스트 산출물
+output_depth.png
+
+# 편집기/OS
+.claude/
+.vscode/
+.idea/
