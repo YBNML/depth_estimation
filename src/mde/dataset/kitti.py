@@ -83,7 +83,7 @@ class KITTIDepthDataset(Dataset):
 
         Args:
             seq: 예) "2011_09_26/2011_09_26_drive_0001_sync"
-            idx: 예) "0000000000"
+            idx: Eigen split 파일의 짧은 인덱스 (예: "1757"). 10자리 zero-pad 필요.
             side: "l" 또는 "r"
 
         Returns:
@@ -91,19 +91,21 @@ class KITTIDepthDataset(Dataset):
         """
         # 좌측 카메라: image_02, 우측: image_03
         cam = "image_02" if side == "l" else "image_03"
-        rgb_path = self.raw_dir / seq / cam / "data" / f"{idx}.png"
+        # KITTI 파일명은 10자리 zero-pad (예: "0000001757.png")
+        idx_padded = str(idx).zfill(10)
+        rgb_path = self.raw_dir / seq / cam / "data" / f"{idx_padded}.png"
 
         # depth annotation 경로는 sequence 이름만 사용 (날짜 prefix 빠짐)
         seq_name = Path(seq).name
         depth_path = (
             self.depth_dir / "train" / seq_name /
-            "proj_depth" / "groundtruth" / cam / f"{idx}.png"
+            "proj_depth" / "groundtruth" / cam / f"{idx_padded}.png"
         )
         # train/ 에 없으면 val/ 에서 찾음 (Eigen val split 때문)
         if not depth_path.exists():
             depth_path = (
                 self.depth_dir / "val" / seq_name /
-                "proj_depth" / "groundtruth" / cam / f"{idx}.png"
+                "proj_depth" / "groundtruth" / cam / f"{idx_padded}.png"
             )
         return str(rgb_path), str(depth_path)
 
