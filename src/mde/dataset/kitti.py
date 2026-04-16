@@ -66,6 +66,7 @@ class KITTIDepthDataset(Dataset):
         crop_height: int = 352,
         crop_width: int = 704,
         training: bool = True,
+        filter_missing: bool = True,
     ):
         self.raw_dir = Path(raw_dir)
         self.depth_dir = Path(depth_dir)
@@ -73,7 +74,23 @@ class KITTIDepthDataset(Dataset):
 
         # split 파일 로드: 빈 줄 무시, 공백으로 필드 분리
         with open(split_file, "r") as f:
-            self.samples = [line.strip().split() for line in f if line.strip()]
+            raw_samples = [line.strip().split() for line in f if line.strip()]
+
+        # Eigen split에는 depth GT가 없는 샘플이 섞여 있어, 실제 파일이 존재하는
+        # 샘플만 필터링한다 (training 시 FileNotFoundError 방지).
+        if filter_missing:
+            self.samples = []
+            for s in raw_samples:
+                if len(s) >= 3:
+                    seq, idx, side = s[:3]
+                else:
+                    seq, idx = s[:2]
+                    side = "l"
+                rgb_path, depth_path = self._image_paths(seq, idx, side)
+                if Path(rgb_path).exists() and Path(depth_path).exists():
+                    self.samples.append(s)
+        else:
+            self.samples = raw_samples
 
     def __len__(self) -> int:
         return len(self.samples)
