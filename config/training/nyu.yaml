@@ -1,0 +1,30 @@
+# NYU Depth v2 학습 config (FastDepth 전처리판)
+dataset: "nyu"
+data_dir: "data/nyu/nyudepthv2"
+
+# FastDepth 디렉토리 기반 split (파일 단위로 자동 인덱싱)
+train_dir: "data/nyu/nyudepthv2/train"
+val_dir: "data/nyu/nyudepthv2/val"  # 654 images, 표준 벤치마크
+
+# NYU 기본 해상도 (480x640 RGB) — crop 416x544로 augmentation
+batch_size: 8
+learning_rate: 0.0001
+weight_decay: 0.01
+epochs: 7
+optimizer: "adamw"
+scheduler: "cosine"
+
+loss: "scale_invariant"
+si_alpha: 10.0
+si_lambda: 0.85
+
+augmentation:
+  horizontal_flip: true
+  color_jitter: true
+  random_crop: true
+  crop_height: 416
+  crop_width: 544
+
+# NYU 표준 depth 범위
+max_depth: 10.0
+min_depth: 0.001
